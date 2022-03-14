@@ -10,53 +10,48 @@
             <input type="search" id="search-input" class="search-input" />
             <label class="form-label" for="search-input">{{ translate('global.search') | async }}</label>
           </div>
-          <bmw-button class="" button="secondary" [iconLeft]="'iwp-icon-gen_search'" (click)="search()">
+          <button class="">
             {{ translate('global.search') | async }}
-          </bmw-button>
+          </button>
         </div>
-        <bmw-button button="primary" class="create-btn" (click)="openOrRouting()">
+        <button button="primary" class="create-btn" (click)="openOrRouting()">
           {{ translate(addButtonText) | async }}
-        </bmw-button>
+        </button>
       </div>
       <div class="table-wrapper bmw__margin-top__l">
-        <bmw-ag-grid-theme>
-          <ag-grid-angular
-            class="ag-theme-bmw"
-            [rowData]="rowData"
-            [rowBuffer]="runtimeCompilerData.rowBuffer"
-            [gridOptions]="runtimeCompilerData.gridOptions"
-            [defaultColDef]="runtimeCompilerData.defaultColDef"
-            [rowModelType]="runtimeCompilerData.rowModelType"
-            [paginationPageSize]="runtimeCompilerData.paginationPageSize"
-            [cacheOverflowSize]="runtimeCompilerData.cacheOverflowSize"
-            [maxConcurrentDatasourceRequests]="runtimeCompilerData.maxConcurrentDatasourceRequests"
-            [infiniteInitialRowCount]="runtimeCompilerData.infiniteInitialRowCount"
-            [maxBlocksInCache]="runtimeCompilerData.maxBlocksInCache"
-            [getRowNodeId]="getRowNodeId"
-            [frameworkComponents]="frameworkComponents"
-            [sideBar]="runtimeCompilerData.sideBar"
-            (firstDataRendered)="onFirstDataRendered($event)"
-            (gridReady)="onGridReady($event)"
-          >
-          </ag-grid-angular>
-        </bmw-ag-grid-theme>
+        <ag-grid-angular
+          class="ag-theme-bmw"
+          [rowData]="rowData"
+          [rowBuffer]="runtimeCompilerData.rowBuffer"
+          [gridOptions]="runtimeCompilerData.gridOptions"
+          [defaultColDef]="runtimeCompilerData.defaultColDef"
+          [rowModelType]="runtimeCompilerData.rowModelType"
+          [paginationPageSize]="runtimeCompilerData.paginationPageSize"
+          [cacheOverflowSize]="runtimeCompilerData.cacheOverflowSize"
+          [maxConcurrentDatasourceRequests]="runtimeCompilerData.maxConcurrentDatasourceRequests"
+          [infiniteInitialRowCount]="runtimeCompilerData.infiniteInitialRowCount"
+          [maxBlocksInCache]="runtimeCompilerData.maxBlocksInCache"
+          [getRowNodeId]="getRowNodeId"
+          [sideBar]="runtimeCompilerData.sideBar"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          (gridReady)="onGridReady($event)"
+        >
+        </ag-grid-angular>
       </div>
     </div>
   </div>
 </div>
 
-<bmw-dialog
-  *ngIf="crudBehaviour.withModal"
-  [title]="(isEdit ? getModalEditTitle() : getModalCreateTitle()) | translate"
-  [show]="showFormDialog"
-  [primaryDisabled]="disablePrimaryBtn"
-  [secondaryDisabled]="false"
-  [primaryLabel]="(isEdit ? 'global.save' : 'global.create') | translate"
-  [secondaryLabel]="'global.cancel' | translate"
-  (primaryClick)="save()"
-  (secondaryClick)="closeDialog()"
-  [allowToOverflow]="true"
-  [ngClass]="{ 'full-dialog': crudBehaviour.fullModal }"
->
-  <div [sasDynamicModal]="crudBehaviour.modalSelector"></div>
-</bmw-dialog>
+<ng-template #content let-modal [ngIf]="crudBehaviour.modalSelector">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div [dynamicModal]="crudBehaviour.modalSelector"></div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
+

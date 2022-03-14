@@ -1,7 +1,4 @@
-import { ColDef } from 'ag-grid-community';
-import { SasAgDraggableCellComponent } from './sas-ag-draggable-cell.component';
-import { SasAgCellComponent } from './sas-ag-cell.component';
-import { SasAgDatepickerComponent } from './sas-ag-datepicker.component';
+import {ColDef} from 'ag-grid-community';
 
 export interface SasTableViewConfigModel {
   icons?: any;
@@ -45,11 +42,6 @@ export const SASTABLEVIEW: SasTableViewConfigModel = {
     groupExpanded: ' ',
     groupContracted: ' ',
   },
-  frameworkComponents: {
-    draggableCell: SasAgDraggableCellComponent,
-    sasCellRenderer: SasAgCellComponent,
-    sasDateRenderer: SasAgDatepickerComponent,
-  },
   defaultColDef: {
     flex: 1,
     sortable: true,
@@ -83,21 +75,6 @@ export const SASTABLEVIEW: SasTableViewConfigModel = {
     ],
     defaultToolPanel: undefined,
   },
-  statusBar: {
-    statusPanels: [
-      {
-        statusPanel: 'agTotalAndFilteredRowCountComponent',
-        align: 'left',
-      },
-      {
-        statusPanel: 'agTotalRowCountComponent',
-        align: 'center',
-      },
-      { statusPanel: 'agFilteredRowCountComponent' },
-      { statusPanel: 'agSelectedRowCountComponent' },
-      { statusPanel: 'agAggregationComponent' },
-    ],
-  },
   rowModelType: 'infinite',
   serverSideStoreType: 'partial',
   paginationPageSize: 100,
@@ -109,7 +86,3 @@ export const SASTABLEVIEW: SasTableViewConfigModel = {
   maxBlocksInCache: 2,
   pagination: true,
 };
-
-export const ruleTableConfig = () => ({
-  ...SASTABLEVIEW,
-});

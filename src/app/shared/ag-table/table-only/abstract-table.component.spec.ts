@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AgGridModule } from 'ag-grid-angular';
 import { NGXLogger } from 'ngx-logger';
 import { BaseAgTableConfig } from '../../model/table-base.model';
-import { SasNextLoggerService } from '../../services/sas-logger.service';
+import { SasNextLoggerService } from '../../services/logger.service';
 import { MockFacadeService, mockReducer, MockSelectorService } from '../base-facade.service.spec';
 import { AbstractAgTableComponent } from './abstract-table.component';
 

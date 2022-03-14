@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-import { ReducerCases } from '../../../utils/reducerUtils';
 import { BaseAgTableState } from './base-state';
 import {
   AgTableActionTypes,
@@ -14,6 +13,7 @@ import {
   OnRowEditSuccess,
   OnRowSelect,
 } from './base-action';
+import {ReducerCases} from '../../utils/reducerUtils';
 
 export abstract class BaseReducer<T, A extends Action> {
   public cases(): ReducerCases<BaseAgTableState<T>, A> {
@@ -21,6 +21,7 @@ export abstract class BaseReducer<T, A extends Action> {
       [AgTableActionTypes.ON_DESELECTED]: this.deselectItem.bind(this),
       // @ts-ignore
       [AgTableActionTypes.ON_SELECTED]: this.selectItem.bind(this),
+      // @ts-ignore
       [AgTableActionTypes.ON_LOADING_DATA]: (draft) => {
         draft.isLoading = true;
       },

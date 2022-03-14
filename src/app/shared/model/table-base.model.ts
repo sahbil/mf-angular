@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { SASTABLEVIEW, SasTableViewConfigModel } from '../components/ag-base/sas-table-view-config.model';
+import {SASTABLEVIEW, SasTableViewConfigModel} from '@shared/model/sas-table-view-config.model';
 
 export class BaseAgTableConfig<T> {
   constructor(

@@ -1,25 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { filter } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import { BaseAgTableConfig } from '../../../model/table-base.model';
-import { AgBaseFacadeService } from '../base-facade.service';
-import { AbstractAgTableComponent } from '../table-only/abstract-table.component';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {filter, takeUntil} from 'rxjs/operators';
+import {AgBaseFacadeService} from '../base-facade.service';
+import {AbstractAgTableComponent} from '../table-only/abstract-table.component';
+import {BaseAgTableConfig} from '../../model/table-base.model';
+import {Subject} from 'rxjs';
 
-@Component({ template: '' })
+@Component({template: ''})
 export abstract class AbstractAgTableModalComponent<T, U extends AgBaseFacadeService<T>>
   extends AbstractAgTableComponent<T, U>
-  implements OnInit, OnDestroy
-{
-  draftSubscription!: Subscription;
+  implements OnInit, OnDestroy {
 
-  selectedItemSubscription!: Subscription;
-
-  editedItemSubscription!: Subscription;
-
-  selectNewItemSubscription!: Subscription;
-
-  selectFormValidationSubscription!: Subscription;
+  notifier = new Subject<void>()
 
   disablePrimaryBtn = true;
 
@@ -28,8 +20,8 @@ export abstract class AbstractAgTableModalComponent<T, U extends AgBaseFacadeSer
   draft!: T | undefined;
 
   protected constructor(
-    protected readonly tableConfig: BaseAgTableConfig<T>,
-    protected readonly trans: TranslateService
+    protected override readonly tableConfig: BaseAgTableConfig<T>,
+    protected override readonly trans: TranslateService
   ) {
     super(tableConfig, trans);
   }
@@ -43,10 +35,6 @@ export abstract class AbstractAgTableModalComponent<T, U extends AgBaseFacadeSer
   public get isEdit() {
     return this.isEditMode;
   }
-
-  abstract getModalCreateTitle(): string;
-
-  abstract getModalEditTitle(): string;
 
   public save() {
     if (this.isEdit && this.draft) {
@@ -74,7 +62,7 @@ export abstract class AbstractAgTableModalComponent<T, U extends AgBaseFacadeSer
     this.facade.delete(selectedId[0]);
   }
 
-  openOrRouting() {
+  override openOrRouting() {
     this.openCreateDialog();
   }
 
@@ -90,60 +78,61 @@ export abstract class AbstractAgTableModalComponent<T, U extends AgBaseFacadeSer
     this._showFormDialog = true;
   }
 
-  public ngOnInit() {
+  public override ngOnInit() {
     super.ngOnInit();
     this.initStoreListener();
   }
 
   ngOnDestroy(): void {
-    if (this.editedItemSubscription) {
-      this.editedItemSubscription.unsubscribe();
-    }
-    if (this.draftSubscription) {
-      this.draftSubscription.unsubscribe();
-    }
-    if (this.selectNewItemSubscription) {
-      this.selectNewItemSubscription.unsubscribe();
-    }
-    if (this.selectedItemSubscription) {
-      this.selectedItemSubscription.unsubscribe();
-    }
-    if (this.selectFormValidationSubscription) {
-      this.selectFormValidationSubscription.unsubscribe();
-    }
+    this.notifier.next();
+    this.notifier.complete();
   }
 
   private initStoreListener() {
     this.facade.refreshList();
-    this.editedItemSubscription = this.facade
+    this.facade
       .getEditedItem()
-      .pipe(filter((item) => item !== undefined))
+      .pipe(
+        filter((item) => item !== undefined),
+        takeUntil(this.notifier)
+      )
       .subscribe(() => {
         this.loadTableData();
         this.closeDialog();
       });
 
-    this.selectNewItemSubscription = this.facade
+    this.facade
       .getNewItem()
-      .pipe(filter((item) => item !== undefined))
+      .pipe(
+        filter((item) => item !== undefined),
+        takeUntil(this.notifier)
+      )
       .subscribe(() => {
         this.loadTableData();
         this._showFormDialog = false;
         this.closeDialog();
       });
 
-    this.draftSubscription = this.facade
+    this.facade
       .getDraftItem()
-      .pipe(filter((item) => item !== undefined))
+      .pipe(
+        filter((item) => item !== undefined),
+        takeUntil(this.notifier)
+      )
       .subscribe((draft) => (this.draft = draft));
 
-    this.selectedItemSubscription = this.facade
+    this.facade
       .getSelectedItem()
-      .pipe(filter((item) => item !== undefined))
+      .pipe(
+        filter((item) => item !== undefined),
+        takeUntil(this.notifier)
+      )
       .subscribe(() => this.openEditDialog());
 
-    this.selectFormValidationSubscription = this.facade.getFormValidationState().subscribe((formState) => {
-      this.disablePrimaryBtn = !formState;
-    });
+    this.facade.getFormValidationState()
+      .pipe(takeUntil(this.notifier))
+      .subscribe((formState) => {
+        this.disablePrimaryBtn = !formState;
+      });
   }
 }

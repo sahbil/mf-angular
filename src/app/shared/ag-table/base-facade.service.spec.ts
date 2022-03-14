@@ -1,19 +1,17 @@
-// eslint-disable-next-line max-classes-per-file
-import { Injectable } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { HttpClient } from '@angular/common/http';
-import { Store, StoreModule } from '@ngrx/store';
-import { NGXLogger } from 'ngx-logger';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
-import { AgBaseFacadeService } from './base-facade.service';
-import { BaseSelector } from './store/base-selector';
-import { BaseAgTableState } from './store/base-state';
-import { SasNextRootState } from '../../../store/state';
-import { SasNextLoggerService } from '../../services/sas-logger.service';
-import { SasConfigApiService } from '../../config/service/sas-config-api.service';
-import { immutableReducer } from '../../utils/reducerUtils';
-import { MockReducer, mockState } from './store/base-reducer.spec';
+import {Injectable} from '@angular/core';
+import {TestBed} from '@angular/core/testing';
+import {HttpClient} from '@angular/common/http';
+import {Store, StoreModule} from '@ngrx/store';
+import {NGXLogger} from 'ngx-logger';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {of} from 'rxjs';
+import {AgBaseFacadeService} from './base-facade.service';
+import {BaseSelector} from './store/base-selector';
+import {BaseAgTableState} from './store/base-state';
+import {MockReducer, mockState} from './store/base-reducer.spec';
+import {AppRootState} from '../store/state';
+import {LoggerService} from '../services/logger.service';
+import {immutableReducer} from '../utils/reducerUtils';
 
 @Injectable()
 export class MockSelectorService extends BaseSelector<any> {
@@ -25,13 +23,12 @@ export class MockSelectorService extends BaseSelector<any> {
 @Injectable()
 export class MockFacadeService extends AgBaseFacadeService<any> {
   constructor(
-    protected readonly store$: Store<SasNextRootState>,
-    protected readonly http: HttpClient,
-    protected readonly logger: SasNextLoggerService,
-    protected readonly config: SasConfigApiService,
+    protected override readonly store$: Store<AppRootState>,
+    protected override readonly http: HttpClient,
+    protected override readonly logger: LoggerService,
     private readonly selectorService: MockSelectorService
   ) {
-    super(store$, http, logger, config);
+    super(store$, http, logger);
   }
 
   getSelectorService(): BaseSelector<any> {
@@ -43,7 +40,7 @@ export class MockFacadeService extends AgBaseFacadeService<any> {
   }
 }
 
-const testState = { ...mockState };
+const testState = {...mockState};
 
 const mockReducerInstance = new MockReducer();
 
@@ -72,7 +69,7 @@ describe('AgBaseFacadeService', () => {
             info: (...s: string[]) => console.log(s), // eslint-disable-line no-console
           },
         },
-        SasNextLoggerService,
+        LoggerService,
       ],
     });
     service = TestBed.inject(MockFacadeService);
@@ -185,7 +182,7 @@ describe('AgBaseFacadeService', () => {
 
   it('should load the list state', (done) => {
     const http = TestBed.inject(HttpClient);
-    spyOn(http, 'get').and.returnValue(of({ content: ['boo'] }));
+    spyOn(http, 'get').and.returnValue(of({content: ['boo']}));
     service.loadList();
     service.getList().subscribe((data) => {
       expect(data.length).toEqual(1);

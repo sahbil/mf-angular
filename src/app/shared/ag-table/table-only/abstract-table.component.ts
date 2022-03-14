@@ -2,8 +2,8 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { GridApi, GridOptions, IGetRowsParams } from 'ag-grid-community';
 import { take } from 'rxjs/operators';
-import { BaseAgTableConfig, CRUDBehaviour } from '../../../model/table-base.model';
 import { AgBaseFacadeService } from '../base-facade.service';
+import {BaseAgTableConfig, CRUDBehaviour} from '@shared/model/table-base.model';
 
 @Component({
   template: '',
@@ -14,8 +14,6 @@ export abstract class AbstractAgTableComponent<T, U extends AgBaseFacadeService<
   public showButton: boolean;
 
   addButtonText = 'global.new_row';
-
-  frameworkComponents = {};
 
   crudBehaviour!: CRUDBehaviour;
 

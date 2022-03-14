@@ -2,10 +2,6 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { select, Store } from '@ngrx/store';
-import { PageableResponse } from '../../model/pageable-response.model';
-import { SasNextRootState } from '../../../store/state';
-import { SasNextLoggerService } from '../../services/sas-logger.service';
-import { SasConfigApiService } from '../../config/service/sas-config-api.service';
 import {
   OnApiFailed,
   OnFormValidChanged,
@@ -20,15 +16,17 @@ import {
   OnRowSelect,
 } from './store/base-action';
 import { BaseSelector } from './store/base-selector';
+import {AppRootState} from '../store/state';
+import {LoggerService} from '../services/logger.service';
+import {PageableRequestParams, PageableResponse} from '../model/pageable-response.model';
 
 export abstract class AgBaseFacadeService<T> {
   protected inEditing: boolean = false;
 
   protected constructor(
-    protected readonly store$: Store<SasNextRootState>,
+    protected readonly store$: Store<AppRootState>,
     protected readonly http: HttpClient,
-    protected readonly logger: SasNextLoggerService,
-    protected readonly config: SasConfigApiService
+    protected readonly logger: LoggerService
   ) {}
 
   abstract getUrl(): string;
@@ -66,10 +64,7 @@ export abstract class AgBaseFacadeService<T> {
       .post<T>(this.getUrl(), item)
       .pipe(take(1))
       .subscribe(
-        (newItem) => {
-          this.store$.dispatch(new OnRowAddingSuccess({ newItem }));
-          this.config.loadConfig();
-        },
+        (newItem) => this.store$.dispatch(new OnRowAddingSuccess({ newItem })),
         (err) => this.store$.dispatch(new OnApiFailed({ errorMessage: err }))
       );
   }
@@ -87,10 +82,7 @@ export abstract class AgBaseFacadeService<T> {
       .put<T>(this.getUrl(), item)
       .pipe(take(1))
       .subscribe(
-        (editedItem) => {
-          this.store$.dispatch(new OnRowEditSuccess({ editedItem }));
-          this.config.loadConfig();
-        },
+        (editedItem) => this.store$.dispatch(new OnRowEditSuccess({ editedItem })),
         (err) => this.store$.dispatch(new OnApiFailed({ errorMessage: err }))
       );
   }
@@ -150,10 +142,4 @@ export abstract class AgBaseFacadeService<T> {
   public resetDelete(): void {
     this.store$.dispatch(new OnResetDeleteState());
   }
-}
-
-export interface PageableRequestParams {
-  page?: number;
-  size?: number;
-  sort?: number;
 }

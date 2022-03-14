@@ -4,7 +4,7 @@ import { NGXLogger } from 'ngx-logger';
 @Injectable({
   providedIn: 'root',
 })
-export class SasNextLoggerService {
+export class LoggerService {
   constructor(private readonly logger: NGXLogger) {}
 
   public debug(message: any, ...additional: any[]) {
