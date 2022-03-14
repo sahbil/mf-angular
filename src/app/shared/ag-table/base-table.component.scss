@@ -1,0 +1,125 @@
+:host {
+  display: flex;
+  flex: 1;
+
+  .main-wrapper {
+    display: flex;
+    flex: 1;
+  }
+
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 20px;
+    background: #fff;
+    //height: calc(100vh - 150px);
+    //
+    //@media (min-width: 37.5em) {
+    //  height: calc(100vh - 130px);
+    //}
+  }
+
+  .table-wrapper {
+    height: 100%;
+  }
+
+  .bmw-h2 {
+    color: #5b708f;
+    font-weight: 500;
+    line-height: 37px;
+    text-transform: capitalize;
+  }
+
+  .action-area {
+    display: flex;
+    justify-content: space-between;
+
+    .search-group {
+      display: flex;
+      width: 40%;
+
+      .form-outline {
+        position: relative;
+        display: flex;
+        flex: 1;
+      }
+
+      .search-input {
+        width: 100%;
+        height: var(--spacing-bmw-l);
+        box-sizing: border-box;
+        padding: var(--spacing-bmw-xxs);
+        padding-top: var(--spacing-bmw-xs);
+        padding-bottom: var(--spacing-bmw-xs);
+        border: 1px solid #e5e3dd;
+        border-radius: 0;
+        color: var(--inputfield__default__color);
+        font-size: var(--typography__component-text__font-size);
+        line-height: var(--typography__component-text__line-height);
+        transition: all 0.2s linear;
+        transition: all 0.2s linear;
+
+        &:focus {
+          box-shadow: none !important;
+          box-shadow: none !important;
+          outline: 0;
+
+          ~ .form-label {
+            padding: 0 10px;
+            background: #fff;
+            color: #5b708f;
+            transform: translateY(-5px) translateY(0.1rem) scale(0.8);
+          }
+        }
+
+        ~ .form-label {
+          position: absolute;
+          top: 0;
+          left: var(--spacing-bmw-xxs);
+          overflow: hidden;
+          max-width: 80%;
+          padding-top: var(--spacing-bmw-xs);
+          margin-bottom: 0;
+          color: #c2c2c2;
+          font-size: 12px;
+          line-height: 14px;
+          text-overflow: ellipsis;
+          transform-origin: 0 0;
+          transition: all 0.2s ease-out;
+          transition: all 0.2s ease-out;
+          white-space: nowrap;
+        }
+      }
+
+      ::ng-deep bmw-button {
+        button {
+          border-color: #d9d9d9;
+          border-left: 0;
+        }
+      }
+    }
+
+    .create-btn {
+      display: flex;
+    }
+  }
+
+  bmw-dialog.full-dialog {
+    ::ng-deep {
+      div.wrapper .dialog {
+        top: 0;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 100vh;
+        max-height: 100%;
+        transform: initial;
+      }
+    }
+  }
+
+  ag-grid-angular {
+    height: 100%;
+  }
+}

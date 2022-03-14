@@ -1,0 +1,47 @@
+<div class="bmw__grid main-wrapper">
+  <div class="bmw__grid__inner">
+    <div class="bmw__grid__cell bmw__grid__cell--span-12 page-wrapper">
+      <h2 class="bmw-h2 bmw__margin-bottom__s">
+        {{ title }}
+      </h2>
+      <div class="action-area">
+        <div class="search-group">
+          <div class="form-outline">
+            <input type="search" id="search-input" class="search-input" />
+            <label class="form-label" for="search-input">{{ translate('global.search') | async }}</label>
+          </div>
+          <bmw-button class="" button="secondary" [iconLeft]="'iwp-icon-gen_search'" (click)="search()">
+            {{ translate('global.search') | async }}
+          </bmw-button>
+        </div>
+        <bmw-button *ngIf="showButton" button="primary" class="create-btn" (click)="openOrRouting()">
+          {{ translate(addButtonText) | async }}
+        </bmw-button>
+      </div>
+      <div class="table-wrapper bmw__margin-top__l">
+        <bmw-ag-grid-theme>
+          <ag-grid-angular
+            class="ag-theme-bmw"
+            [rowData]="rowData"
+            [columnDefs]="runtimeCompilerData.columns"
+            [rowBuffer]="runtimeCompilerData.rowBuffer"
+            [gridOptions]="runtimeCompilerData.gridOptions"
+            [defaultColDef]="runtimeCompilerData.defaultColDef"
+            [rowModelType]="runtimeCompilerData.rowModelType"
+            [paginationPageSize]="runtimeCompilerData.paginationPageSize"
+            [cacheOverflowSize]="runtimeCompilerData.cacheOverflowSize"
+            [maxConcurrentDatasourceRequests]="runtimeCompilerData.maxConcurrentDatasourceRequests"
+            [infiniteInitialRowCount]="runtimeCompilerData.infiniteInitialRowCount"
+            [maxBlocksInCache]="runtimeCompilerData.maxBlocksInCache"
+            [getRowNodeId]="getRowNodeId"
+            [frameworkComponents]="frameworkComponents"
+            [sideBar]="runtimeCompilerData.sideBar"
+            (firstDataRendered)="onFirstDataRendered($event)"
+            (gridReady)="onGridReady($event)"
+          >
+          </ag-grid-angular>
+        </bmw-ag-grid-theme>
+      </div>
+    </div>
+  </div>
+</div>
