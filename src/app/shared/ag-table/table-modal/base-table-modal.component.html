@@ -1,57 +1,44 @@
-<div class="bmw__grid main-wrapper">
-  <div class="bmw__grid__inner">
-    <div class="bmw__grid__cell bmw__grid__cell--span-12 page-wrapper">
-      <h2 class="bmw-h2 bmw__margin-bottom__s">
-        {{ title }}
-      </h2>
-      <div class="action-area">
-        <div class="search-group">
-          <div class="form-outline">
-            <input type="search" id="search-input" class="search-input" />
-            <label class="form-label" for="search-input">{{ translate('global.search') | async }}</label>
-          </div>
-          <button class="">
-            {{ translate('global.search') | async }}
-          </button>
+<div class="main-wrapper">
+  <div class="page-wrapper">
+    <h2 class="bmw-h2">
+      {{ title }}
+    </h2>
+    <div class="action-area">
+      <div class="search-group">
+        <div class="form-outline">
+          <input type="search" id="search-input" class="search-input" />
+          <label class="form-label" for="search-input">Search</label>
         </div>
-        <button button="primary" class="create-btn" (click)="openOrRouting()">
-          {{ translate(addButtonText) | async }}
+        <button class="btn btn-primary">
+          Search
         </button>
       </div>
-      <div class="table-wrapper bmw__margin-top__l">
-        <ag-grid-angular
-          class="ag-theme-bmw"
-          [rowData]="rowData"
-          [rowBuffer]="runtimeCompilerData.rowBuffer"
-          [gridOptions]="runtimeCompilerData.gridOptions"
-          [defaultColDef]="runtimeCompilerData.defaultColDef"
-          [rowModelType]="runtimeCompilerData.rowModelType"
-          [paginationPageSize]="runtimeCompilerData.paginationPageSize"
-          [cacheOverflowSize]="runtimeCompilerData.cacheOverflowSize"
-          [maxConcurrentDatasourceRequests]="runtimeCompilerData.maxConcurrentDatasourceRequests"
-          [infiniteInitialRowCount]="runtimeCompilerData.infiniteInitialRowCount"
-          [maxBlocksInCache]="runtimeCompilerData.maxBlocksInCache"
-          [getRowNodeId]="getRowNodeId"
-          [sideBar]="runtimeCompilerData.sideBar"
-          (firstDataRendered)="onFirstDataRendered($event)"
-          (gridReady)="onGridReady($event)"
-        >
-        </ag-grid-angular>
-      </div>
+      <button class="btn btn-primary create-btn" (click)="openOrRouting()">
+        Add
+      </button>
+    </div>
+    <div class="table-wrapper ">
+      <ag-grid-angular
+        style="width: 500px; height: 500px;"
+        class="ag-theme-alpine"
+        [rowData]="rowData"
+        [rowBuffer]="runtimeCompilerData.rowBuffer"
+        [gridOptions]="runtimeCompilerData.gridOptions"
+        [defaultColDef]="runtimeCompilerData.defaultColDef"
+        [rowModelType]="runtimeCompilerData.rowModelType"
+        [paginationPageSize]="runtimeCompilerData.paginationPageSize"
+        [cacheOverflowSize]="runtimeCompilerData.cacheOverflowSize"
+        [maxConcurrentDatasourceRequests]="runtimeCompilerData.maxConcurrentDatasourceRequests"
+        [infiniteInitialRowCount]="runtimeCompilerData.infiniteInitialRowCount"
+        [maxBlocksInCache]="runtimeCompilerData.maxBlocksInCache"
+        [getRowNodeId]="getRowNodeId"
+        [sideBar]="runtimeCompilerData.sideBar"
+        (firstDataRendered)="onFirstDataRendered($event)"
+        (gridReady)="onGridReady($event)"
+      >
+      </ag-grid-angular>
     </div>
   </div>
 </div>
-
-<ng-template #content let-modal [ngIf]="crudBehaviour.modalSelector">
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <div [dynamicModal]="crudBehaviour.modalSelector"></div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
-  </div>
-</ng-template>
+<div [dynamicForm]="crudBehaviour.modalSelector" *ngIf="crudBehaviour.modalSelector"></div>
 

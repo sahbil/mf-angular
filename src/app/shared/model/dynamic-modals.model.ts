@@ -1,13 +1,13 @@
 import {Type} from '@angular/core';
-import {AppComponent} from '../../app.component';
+import {MoviesModalComponent} from '../../features/movies/components/modal/movies-modal.component';
 
-export const MEASURE_MODAL = 'app-home';
+export const MOVIES_MODAL = 'app-movies-modal';
 
 class CrudModalComponentMap {
   componentMaps: Map<string, Type<DynamicModalFormComponent>> = new Map();
 
   constructor() {
-    this.componentMaps.set(MEASURE_MODAL, AppComponent);
+    this.componentMaps.set(MOVIES_MODAL, MoviesModalComponent);
   }
 }
 

@@ -2,17 +2,17 @@ import {Directive, Input, OnInit, ViewContainerRef} from '@angular/core';
 import {DynamicComponentFactoryService} from '../services/dynamic-component-factory.service';
 
 @Directive({
-  selector: '[dynamicModal]',
+  selector: '[dynamicForm]',
 })
 export class DynamicModalDirective implements OnInit {
   @Input()
-  dynamicModal = '';
+  dynamicForm = '';
 
   constructor(public viewContainerRef: ViewContainerRef,
               private readonly service: DynamicComponentFactoryService) {
   }
 
   ngOnInit(): void {
-    this.service.addDynamicComponent(this.viewContainerRef, this.dynamicModal);
+    this.service.addDynamicComponent(this.viewContainerRef, this.dynamicForm);
   }
 }

@@ -2,6 +2,7 @@ import {MoviesFeatureAction} from './actions';
 import {MoviesModel} from '../model/movies.model';
 import {BaseReducer} from '@shared/ag-table/store/base-reducer';
 import {MoviesState} from './state';
+import {immutableReducer} from '@shared/utils/reducerUtils';
 
 class MoviesReducer extends BaseReducer<MoviesModel, MoviesFeatureAction> {}
 

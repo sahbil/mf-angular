@@ -34,6 +34,9 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/scss/bootstrap.scss",
+              "ag-grid-community/dist/styles/ag-grid.css",
+              "ag-grid-community/dist/styles/ag-theme-alpine.css",
               "src/styles.scss"
             ],
             "scripts": []

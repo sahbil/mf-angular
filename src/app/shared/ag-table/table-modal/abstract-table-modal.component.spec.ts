@@ -4,20 +4,17 @@ import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/
 import { StoreModule } from '@ngrx/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NGXLogger } from 'ngx-logger';
-import { TranslateService } from '@ngx-translate/core';
+import {TranslateFakeLoader, TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
 import { AgGridModule } from 'ag-grid-angular';
 import { of } from 'rxjs';
 import { MockFacadeService, mockReducer, MockSelectorService } from '../base-facade.service.spec';
-import { SasNextLoggerService } from '../../../services/sas-logger.service';
 import { AbstractAgTableModalComponent } from './abstract-table-modal.component';
-import { BaseAgTableConfig } from '../../../model/table-base.model';
-import { BMWTranslateTestingModule, MockTranslatePipe } from '../../../../test/translate-testing.module';
+import {BaseAgTableConfig} from '@shared/model/table-base.model';
 
 @Component({
   template: `
     <ag-grid-angular
       class="ag-theme-bmw"
-      [modules]="modules"
       [rowData]="rowData"
       [rowBuffer]="runtimeCompilerData.rowBuffer"
       [gridOptions]="runtimeCompilerData.gridOptions"
@@ -29,7 +26,6 @@ import { BMWTranslateTestingModule, MockTranslatePipe } from '../../../../test/t
       [infiniteInitialRowCount]="runtimeCompilerData.infiniteInitialRowCount"
       [maxBlocksInCache]="runtimeCompilerData.maxBlocksInCache"
       [getRowNodeId]="getRowNodeId"
-      [frameworkComponents]="frameworkComponents"
       [statusBar]="runtimeCompilerData.statusBar"
       (firstDataRendered)="onFirstDataRendered($event)"
       (gridReady)="onGridReady($event)"
@@ -37,7 +33,7 @@ import { BMWTranslateTestingModule, MockTranslatePipe } from '../../../../test/t
   `,
 })
 class MockTableModalComponent extends AbstractAgTableModalComponent<string, MockFacadeService> {
-  constructor(protected readonly service: MockFacadeService, protected readonly trans: TranslateService) {
+  constructor(protected readonly service: MockFacadeService, protected override readonly trans: TranslateService) {
     super(
       new BaseAgTableConfig<string>(
         'Boo',
@@ -79,10 +75,15 @@ describe('AbstractAgTableModalComponent', () => {
         HttpClientTestingModule,
         FormsModule,
         ReactiveFormsModule,
-        BMWTranslateTestingModule,
         AgGridModule.withComponents([]),
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+          }
+        })
       ],
-      declarations: [MockTableModalComponent, MockTranslatePipe],
+      declarations: [MockTableModalComponent],
       providers: [
         MockFacadeService,
         MockSelectorService,
@@ -97,7 +98,6 @@ describe('AbstractAgTableModalComponent', () => {
             info: (...s: string[]) => console.log(s), // eslint-disable-line no-console
           },
         },
-        SasNextLoggerService,
       ],
     })
       .overrideComponent(MockTableModalComponent, {
@@ -156,26 +156,6 @@ describe('AbstractAgTableModalComponent', () => {
     const spy = spyOn<any>(comp, 'initStoreListener');
     comp.ngOnInit();
     expect(spy).toHaveBeenCalled();
-  });
-
-  it('should destroy all subscriptions', () => {
-    expect(comp.editedItemSubscription).toBeDefined();
-    const spyEdit = spyOn<any>(comp.editedItemSubscription, 'unsubscribe');
-    expect(comp.draftSubscription).toBeDefined();
-    const spyDraft = spyOn<any>(comp.draftSubscription, 'unsubscribe');
-    expect(comp.selectNewItemSubscription).toBeDefined();
-    const spyNew = spyOn<any>(comp.selectNewItemSubscription, 'unsubscribe');
-    expect(comp.selectFormValidationSubscription).toBeDefined();
-    const spyForm = spyOn<any>(comp.selectFormValidationSubscription, 'unsubscribe');
-    expect(comp.selectedItemSubscription).toBeDefined();
-    const spySelection = spyOn<any>(comp.selectedItemSubscription, 'unsubscribe');
-
-    comp.ngOnDestroy();
-    expect(spyEdit).toHaveBeenCalled();
-    expect(spyDraft).toHaveBeenCalled();
-    expect(spyNew).toHaveBeenCalled();
-    expect(spyForm).toHaveBeenCalled();
-    expect(spySelection).toHaveBeenCalled();
   });
 
   it('should close the dialog when edit item state is changed', fakeAsync(() => {

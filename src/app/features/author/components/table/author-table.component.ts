@@ -1,22 +1,22 @@
 import {Component} from '@angular/core';
-import {AbstractAgTableModalComponent} from '@shared/ag-table/table-modal/abstract-table-modal.component';
 import {AuthorModel} from '../../model/author-model';
 import {AuthorFacadeService} from '../../services/author-facade.service';
 import {TranslateService} from '@ngx-translate/core';
 import {BaseAgTableConfig} from '@shared/model/table-base.model';
 import {authorColumns} from '../../model/author-columns.model';
+import {AbstractAgTableComponent} from '@shared/ag-table/table-only/abstract-table.component';
 
 @Component({
   selector: 'app-movies-table',
-  templateUrl: '../../../../shared/ag-table/table-modal/base-table-modal.component.html'
+  templateUrl: '../../../../shared/ag-table/table-modal/base-table-modal.component.html',
+  styleUrls: ['../../../../shared/ag-table/base-table.component.scss']
 })
-export class AuthorTableComponent extends AbstractAgTableModalComponent<AuthorModel, AuthorFacadeService> {
+export class AuthorTableComponent extends AbstractAgTableComponent<AuthorModel, AuthorFacadeService> {
   constructor(private readonly service: AuthorFacadeService,
               protected override readonly trans: TranslateService) {
     super(
-      new BaseAgTableConfig<AuthorModel>('Movies', authorColumns, {
-        withModal: true,
-        modalSelector: 'app-movies-modal',
+      new BaseAgTableConfig<AuthorModel>('Authors', authorColumns, {
+        withModal: false,
       }),
       trans
     );

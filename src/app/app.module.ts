@@ -6,6 +6,9 @@ import {RootStoreModule} from '@shared/store/root-store.module';
 import {TranslateModule} from '@ngx-translate/core';
 import {TranslationConfig} from '@shared/translate/translate-utils';
 import {AppRoutingModule} from './app-routing.module';
+import {HttpClientModule} from '@angular/common/http';
+import {LoggerModule, NgxLoggerLevel} from 'ngx-logger';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -16,6 +19,12 @@ import {AppRoutingModule} from './app-routing.module';
     BrowserModule,
     RootStoreModule,
     AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    LoggerModule.forRoot({
+      level: NgxLoggerLevel.DEBUG,
+    }),
     TranslateModule.forRoot(TranslationConfig),
     NgbModule
   ],

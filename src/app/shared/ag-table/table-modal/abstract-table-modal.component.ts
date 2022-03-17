@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {filter, takeUntil} from 'rxjs/operators';
 import {AgBaseFacadeService} from '../base-facade.service';
@@ -10,7 +10,7 @@ import {Subject} from 'rxjs';
 export abstract class AbstractAgTableModalComponent<T, U extends AgBaseFacadeService<T>>
   extends AbstractAgTableComponent<T, U>
   implements OnInit, OnDestroy {
-
+  @ViewChild('content') content!: ElementRef;
   notifier = new Subject<void>()
 
   disablePrimaryBtn = true;

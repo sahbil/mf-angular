@@ -8,7 +8,8 @@ import {moviesColumns} from '../../model/movies-columns.model';
 
 @Component({
   selector: 'app-movies-table',
-  templateUrl: '../../../../shared/ag-table/table-modal/base-table-modal.component.html'
+  templateUrl: '../../../../shared/ag-table/table-modal/base-table-modal.component.html',
+  styleUrls: ['../../../../shared/ag-table/base-table.component.scss']
 })
 export class MoviesTableComponent extends AbstractAgTableModalComponent<MoviesModel, MoviesFacadeService> {
   constructor(private readonly service: MoviesFacadeService,

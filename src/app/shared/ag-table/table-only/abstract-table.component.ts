@@ -32,7 +32,6 @@ export abstract class AbstractAgTableComponent<T, U extends AgBaseFacadeService<
     protected readonly trans: TranslateService
   ) {
     this._runtimeCompilerData = tableConfig.agTableConfig();
-    this.translateHeader();
     this.gridOptions = { ...this._runtimeCompilerData.gridOptions };
     this.title = tableConfig.title;
     this.showButton = tableConfig.showAddButton;
@@ -62,12 +61,6 @@ export abstract class AbstractAgTableComponent<T, U extends AgBaseFacadeService<
 
   public get disableDeleteBtn(): boolean {
     return this._disableDeleteBtn;
-  }
-
-  public translateHeader() {
-    this._runtimeCompilerData.columnDefs.forEach((def: any) => {
-      def.headerName = this.trans.instant(def.headerName);
-    });
   }
 
   abstract getService(): U;
@@ -119,14 +112,6 @@ export abstract class AbstractAgTableComponent<T, U extends AgBaseFacadeService<
     if (this.crudBehaviour.router) {
       this.crudBehaviour.router.navigate([this.crudBehaviour.navigateTo]);
     }
-  }
-
-  public search() {
-    throw new Error('Generic search not implemented for abstract table component');
-  }
-
-  translate(text: string) {
-    return this.trans.get(text);
   }
 
   getTitle(): string {
